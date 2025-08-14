@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-5">
+    <h2 class="text-center">Customer Summary</h2>
+    <hr class="mt-5">
+    <div>
+        <canvas id="requestsChart"></canvas>
+    </div>
+</div>
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('requestsChart');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Total','Booked'],
+            datasets: [{
+                label: 'Service Status',
+                data: [{{total_services}}, {{ booked_services}}],
+                backgroundColor : ['#4CAF50', '#2196F3', '#FF5722'],
+                borderColor : ['#388E3C', '#1976D2', '#D32F2F'],
+                borderWidth : 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}
+{% endblock %}

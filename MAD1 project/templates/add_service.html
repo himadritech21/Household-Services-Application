@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Service</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=True)%}
+        {% if messages %}
+            {% for category , message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{message}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class = "col-md-6">
+                <div class = "card shadow">
+                    <div class="card-body">
+                        <h3 class="card-title text-center mb-4">Add Service</h3>
+                        <form action="/admin/add_service" method="POST">
+                            <label for="name" class="form-label">NAME</label>
+                            <input type="name" id="name" name="name" class="form-control" placeholder="Enter service name" required>
+
+                            <label for="description" class="form-label">DESCRIPTION</label>
+                        <input type="description" id="name" name="description" class="form-control" placeholder="Enter description" required>
+
+                        <label for="price" class="form-label">PRICE</label>
+                        <input type="price" id="price" name="price" class="form-control" placeholder="Enter service price" required>
+                        
+                        <label for="time_required" class="form-label">TIME REQUIRED</label>
+                        <input type="time_required" id="time_required" name="time_required" class="form-control" placeholder="Enter time required(in hrs)" required>
+
+                        <button type="submit" class="btn btn-primary w-100">Submit</button>
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

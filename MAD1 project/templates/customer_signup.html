@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    {% with messages = get_flashed_messages(with_categories=True)%}
+        {% if messages %}
+            {% for category , message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{message}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card-body">
+                    <h3 class="card-title text-center">Customer Signup</h3>
+                    <form action="/customer/signup" method="post" >
+                        <label for="id" class="form-label">ID</label>
+                        <input type="id" id="id" name="id" class="form-control"placeholder="Enter your ID" >
+                        
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+
+                        <label for="name" class="form-label">Fullname</label>
+                        <input type ="name" id="name" name="name" class='form-control' placeholder="Enter your name" required>
+
+                        <label for="address" class="form-label">Address</label>
+                        <input type ="address" id="address" name="address" class="form-control" placeholder="Enter your address" required>
+
+                        <label for="pincode" class="form-label">Pin Code</label>
+                        <input type ="pincode" id="name" name="pincode" class='form-control' placeholder="Enter Pincode" required>
+
+                        <button type="submit" class="btn btn-primary w-100">Register</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <footer class="text-center mt-5">
+        <p>&copy; 2024 Household Services App. All rights reserved</p>
+    </footer>
+</body>
+</html>

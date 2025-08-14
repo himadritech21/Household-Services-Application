@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% with messages = get_flashed_messages(with_categories=True)%}
+        {% if messages %}
+            {% for category , message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{message}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+{% block content %}
+<div class="mt-4">
+    <h2 class="text-center">Welcome, {{ customer.name }}</h2>
+
+    <!-- Book a Service Section -->
+    <div class="card mt-4">
+        <div class="card-header bg-primary text-white">
+            Book a Service
+        </div>
+        <div class="card-body">
+            <form method="POST" action="/customer_dashboard">
+                <div class="mb-3">
+                    <label for="service_id" class="form-label">Available Services</label>
+                    <select name="service_id" id="service_id" class="form-select" required>
+                        <option value="" disabled selected>Select a Service</option>
+                        {% for service in all_services %}
+                        <option value="{{ service.id }}">{{ service.name }} - ₹{{ service.base_price }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary">Book Service</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Booking History Section -->
+    <div class="card mt-4">
+        <div class="card-header bg-secondary text-white">
+            Booking History
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Service</th>
+                        <th>Status</th>
+                        <th>Professional</th>
+                        <th>Date Requested</th>
+                        <th>Date Completed</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in service_requests %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ request.service.name }}</td>
+                        <td>{{ request.service_status }}</td>
+                        <td>
+                            {% if request.professional %}
+                            {{request.professional.name}}
+                            {% else %}
+                            Not Assigned
+                            {% endif %}
+                        </td>
+                        <td>{{ request.date_of_request.strftime('%Y-%m-%d') }}</td>
+                        <td>
+                            {% if request.date_of_completion %}
+                            {{ request.date_of_completion.strftime('%Y-%m-%d') }}
+                            {% else %}
+                            N/A
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if request.service_status == "requested" %}
+                            <form method="POST" action="{{url_for('delete_service_request',request_id=request.id)}}">
+                                <input type="hidden" name="request_id" value="{{request.id}}">
+                                <button type="submit" name="action" value="delete" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ url_for('close_service_request', request_id=request.id) }}" class="btn btn-warning btn-sm">
+                                Close Request
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">No bookings found.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+    </tbody>
+</table>
+{% endblock %}

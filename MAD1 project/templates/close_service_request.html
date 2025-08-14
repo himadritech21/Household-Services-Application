@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% with messages = get_flashed_messages(with_categories=True)%}
+        {% if messages %}
+            {% for category , message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{message}}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Close Service Request</h2>
+    <p>Service: {{ service_request.service.name }}</p>
+    <p>Professional: {{ service_request.professional.name }}</p>
+    <p>Date of Request: {{ service_request.date_of_request.strftime('%Y-%m-%d') }}</p>
+
+    <form method="POST" action="{{ url_for('close_service_request', request_id=service_request.id) }}">
+        <label for="rating" class="form-label">Rate the Professional (1-5):</label>
+        <input type="number" id="rating" name="rating" class="form-control" min="1" max="5" required>
+
+        <button type="submit" class="btn btn-primary mt-3">Submit Rating and Close</button>
+    </form>
+</div>
+{% endblock %}

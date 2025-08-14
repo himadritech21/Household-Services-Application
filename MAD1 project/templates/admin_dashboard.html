@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% block content %}
+  <h2><center><em>Welcome to the Admin Dashboard</em></center></h2>
+  <body style="background-image:url('https://png.pngtree.com/thumb_back/fh260/background/20220427/pngtree-creative-tech-workspace-project-earning-admin-photo-image_30651276.jpg') ; background-position:center ; background-size:cover")>
+
+  <div class="container mt-4">
+    <h3>Manage Services</h3>
+    <a href="/admin/add_service" class="btn btn-primary mb-3">Add</a>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Base Price</th>
+          <th>Time required</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for service in services %}
+        <tr>
+          <td>{{ service.id }}</td>
+          <td>{{ service.name }}</td>
+          <td>{{ service.description }}</td>
+          <td>{{ service.base_price }}</td>
+          <td>{{ service.time_required }}</td>
+          <td>
+            <a href="/admin/update_service/{{ service.id }}" class="btn btn-warning btn-sm">Edit</a>
+            <form action="{{ url_for('delete_service', service_id=service.id) }}" method="POST" style="display:inline;">
+              <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <form action="/delete_all" method="POST">
+      <button type="submit" class="btn btn-danger">Delete All</button>
+    </form>
+  </div>
+
+  <div class="container mt-5">
+    <h3>Pending Professionals</h3>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Experience</th>
+          <th>Service</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for professional in pending_professionals %}
+        <tr>
+          <td>{{ professional.id }}</td>
+          <td>{{ professional.name }}</td>
+          <td>{{ professional.experience }}</td>
+          <td>{{ professional.services }}</td>
+          <td>
+            <form method="POST" style="display: inline;">
+              <input type="hidden" name="professional_id" value="{{ professional.id }}">
+              <button type="submit" name="action" value="approve" class="btn btn-success btn-sm">Approve</button>
+              <button type="submit" name="action" value="reject" class="btn btn-danger btn-sm">Reject</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="container mt-5">
+</div>
+<div class="container mt-5">
+  <div class="container mt-5">
+    <h2>Customers</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for customer in customers %}
+        <tr>
+          <td>{{ customer.name }}</td>
+          <td>{{ customer.status }}</td>
+          <td>
+            {% if customer.status == "active" %}
+            <form action="{{ url_for('block_customer', customer_id=customer.id) }}" method="POST" style="display:inline;">
+              <button class="btn btn-danger btn-sm" type="submit">Block</button>
+            </form>
+            {% elif customer.status == "blocked" %}
+            <form action="{{ url_for('unblock_customer', customer_id=customer.id) }}" method="POST" style="display:inline;">
+              <button class="btn btn-success btn-sm" type="submit">Unblock</button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  
+    <h2>Professionals</h2>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for professional in professionals %}
+        <tr>
+          <td>{{ professional.name }}</td>
+          <td>{{ professional.status }}</td>
+          <td>
+            {% if professional.status == "approved" %}
+            <form action="{{ url_for('block_professional', professional_id=professional.id) }}" method="POST" style="display:inline;">
+              <button class="btn btn-danger btn-sm" type="submit">Block</button>
+            </form>
+            {% elif professional.status == "blocked" %}
+            <form action="{{ url_for('unblock_professional', professional_id=professional.id) }}" method="POST" style="display:inline;">
+              <button class="btn btn-success btn-sm" type="submit">Unblock</button>
+            </form>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  
+</body>
+{% endblock %}
