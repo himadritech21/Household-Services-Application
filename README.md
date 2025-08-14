@@ -5,5 +5,7 @@ It is a multi-user app (requires one admin and other service professionals/ cust
 Frameworks used
 
 Flask for application code
+
 Jinja2 templates + Bootstrap for HTML generation and styling
+
 SQLite for data storage
